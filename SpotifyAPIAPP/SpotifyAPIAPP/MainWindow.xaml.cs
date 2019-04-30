@@ -25,9 +25,28 @@ namespace SpotifyAPIAPP
     /// </summary>
     public partial class MainWindow : Window
     {
+        //AutorizationCodeAuth A = new AutorizationCodeAuth()
+        //{
+        //    ClientId = "84654d712193471199189e4f593781dc",
+        //    
+        //}
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnSubmit_Click(object sender, RoutedEventArgs e)
+        {
+            SpotifyWebAPI Spot1 = new SpotifyWebAPI()
+            {
+                AccessToken = "84654d712193471199189e4f593781dc",
+
+            };
+            //var search = Spot1.SearchItems(txtSearch.Text, SearchType.Artist);
+            var result = Spot1.GetArtist(txtSearch.Text);
+            lstArtist.Items.Add(result.Name);
+            
+
         }
     }
 }
