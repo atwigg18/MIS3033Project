@@ -37,7 +37,13 @@ namespace SpotifyAPIAPP
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
-                     
+            lstArtist.Items.Clear();
+            lstAlbum.Items.Clear();
+            lstSong.Items.Clear();
+            lstArtist.SelectedIndex = -1;
+            lstAlbum.SelectedIndex = -1;
+            lstSong.SelectedIndex = -1;
+            imgalbum.Source = null;
             string cid = "84654d712193471199189e4f593781dc";
             string sid = "ab7ead187ddd4f0aaa17542b26ca8d5e";
 
@@ -57,15 +63,106 @@ namespace SpotifyAPIAPP
                 TokenType = T.TokenType,
                 
             };
-            SearchItem search = Spot1.SearchItems(txtSearch.Text, SearchType.Artist);
-            var s = search.Artists.Items.ToList();
-            lstArtist.Items.Add(s[0].Name);
-            Paging<SimpleAlbum> sev = Spot1.GetArtistsAlbums(s[0].Id, AlbumType.All);
-            sev.Items.ForEach(x => lstAlbum.Items.Add(x.Name));
-            //Paging<SimpleTrack> st = Spot1.GetAlbumTracks(lstAlbum)
+            try
+            {
+                SearchItem search = Spot1.SearchItems(txtSearch.Text, SearchType.Artist);
+                var s = search.Artists.Items.ToList();
+                //lstArtist.Items.Add($"{s[0].Name}/{s[0].Id}");
+                foreach (var item in s)
+                {
+                    lstArtist.Items.Add($"{item.Name}/{item.Id}");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Please enter a valid artist!", "ALERT!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            //var selection = lstAlbum.SelectedItem.ToString().Split('/');
+            //Paging<SimpleTrack> st = Spot1.GetAlbumTracks(selection[1]);
+            //st.Items.ForEach(x => lstSong.Items.Add(x.Name));
             //lstAlbum.Items.
             //FullArtist A = Spot1.GetArtist("1KpCi9BOfviCVhmpI4G2sY");
             //MessageBox.Show(A.Name);
+            
+        }
+
+        private void lstArtist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            lstAlbum.Items.Clear();
+            string cid = "84654d712193471199189e4f593781dc";
+            string sid = "ab7ead187ddd4f0aaa17542b26ca8d5e";
+
+            ClientCredentialsAuth C = new ClientCredentialsAuth()
+            {
+                ClientId = cid,
+                ClientSecret = sid,
+            };
+            Token T = C.DoAuth();
+
+
+            SpotifyWebAPI Spot1 = new SpotifyWebAPI()
+            {
+                UseAuth = true,
+                AccessToken = T.AccessToken,
+                UseAutoRetry = true,
+                TokenType = T.TokenType,
+
+            };
+            SearchItem search = Spot1.SearchItems(txtSearch.Text, SearchType.Artist);
+            try
+            {
+                var s = search.Artists.Items.ToList();
+                var selection = lstArtist.SelectedItem.ToString().Split('/');
+                Paging<SimpleAlbum> sev = Spot1.GetArtistsAlbums(selection[1], AlbumType.All);
+                sev.Items.ForEach(x => lstAlbum.Items.Add($"{x.Name}/{x.Id}"));
+            }
+            catch
+            {
+                lstArtist.SelectedIndex = -1;
+            }
+        }
+
+        private void lstAlbum_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            lstSong.Items.Clear();
+            string cid = "84654d712193471199189e4f593781dc";
+            string sid = "ab7ead187ddd4f0aaa17542b26ca8d5e";
+
+            ClientCredentialsAuth C = new ClientCredentialsAuth()
+            {
+                ClientId = cid,
+                ClientSecret = sid,
+            };
+            Token T = C.DoAuth();
+
+
+            SpotifyWebAPI Spot1 = new SpotifyWebAPI()
+            {
+                UseAuth = true,
+                AccessToken = T.AccessToken,
+                UseAutoRetry = true,
+                TokenType = T.TokenType,
+
+            };
+            try
+            {
+                var selection = lstAlbum.SelectedItem.ToString().Split('/');
+                Paging<SimpleTrack> st = Spot1.GetAlbumTracks(selection[1]);
+                st.Items.ForEach(x => lstSong.Items.Add(x.Name));
+                FullAlbum imgs = Spot1.GetAlbum(selection[1]);
+                
+                BitmapImage img = new BitmapImage();
+                img.BeginInit();
+                img.UriSource = new Uri(imgs.Images[0].Url);
+                img.EndInit();
+                imgalbum.Source = img;
+            }
+            catch
+            {
+                lstArtist.Items.Clear();
+                lstAlbum.Items.Clear();
+                lstSong.Items.Clear();
+            }
             
         }
     }
