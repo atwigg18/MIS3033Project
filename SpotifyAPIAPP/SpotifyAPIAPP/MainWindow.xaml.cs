@@ -25,41 +25,48 @@ namespace SpotifyAPIAPP
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static string cid = "84654d712193471199189e4f593781dc";
-        private static string sid = "ab7ead187ddd4f0aaa17542b26ca8d5e";
-
         
 
 
         //AutorizationCodeAuth A = new AutorizationCodeAuth(Clie)
         
         public MainWindow()
+        {       
+         InitializeComponent();
+        }
+
+        private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
+                     
+            string cid = "84654d712193471199189e4f593781dc";
+            string sid = "ab7ead187ddd4f0aaa17542b26ca8d5e";
 
             ClientCredentialsAuth C = new ClientCredentialsAuth()
             {
                 ClientId = cid,
                 ClientSecret = sid,
             };
-            Token T = new Token();
+            Token T = C.DoAuth();
             
-        
 
-            
-           
+            SpotifyWebAPI Spot1 = new SpotifyWebAPI()
+            {
+                UseAuth = true,
+                AccessToken = T.AccessToken,
+                UseAutoRetry = true,
+                TokenType = T.TokenType,
                 
-           
-            InitializeComponent();
-        }
-
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
-        {
+            };
+            SearchItem search = Spot1.SearchItems(txtSearch.Text, SearchType.Artist);
+            var s = search.Artists.Items.ToList();
+            lstArtist.Items.Add(s[0].Name);
+            Paging<SimpleAlbum> sev = Spot1.GetArtistsAlbums(s[0].Id, AlbumType.All);
+            sev.Items.ForEach(x => lstAlbum.Items.Add(x.Name));
+            //Paging<SimpleTrack> st = Spot1.GetAlbumTracks(lstAlbum)
+            //lstAlbum.Items.
+            //FullArtist A = Spot1.GetArtist("1KpCi9BOfviCVhmpI4G2sY");
+            //MessageBox.Show(A.Name);
             
-            //var search = Spot1.SearchItems(txtSearch.Text, SearchType.Artist);
-            var result = Spot1.GetArtist(txtSearch.Text);
-            lstArtist.Items.Add(result.Name);
-            
-
         }
     }
 }
