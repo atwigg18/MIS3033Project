@@ -10,8 +10,8 @@
         <Grid.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="https://static.photocdn.pt/images/articles/2017_1/iStock-545347988.jpg"></ImageBrush>
         </Grid.Background>
-        <Label Content="Search:" HorizontalAlignment="Left" Margin="18,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.503,-0.426" Foreground="White" FontWeight="Bold" FontSize="14"/>
-        <TextBox x:Name="txtSearch" HorizontalAlignment="Left" Height="23" Margin="74,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="472"/>
+        <Label Content="Search Artist:" HorizontalAlignment="Left" Margin="0,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.503,-0.426" Foreground="White" FontWeight="Bold" FontSize="14"/>
+        <TextBox x:Name="txtSearch" HorizontalAlignment="Left" Height="23" Margin="100,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="472"/>
         <Button x:Name="btnSubmit" Content="Submit" HorizontalAlignment="Left" Margin="580,16,0,0" VerticalAlignment="Top" Width="183" FontWeight="Bold" Click="btnSubmit_Click"/>
         <ListBox x:Name="lstArtist" HorizontalAlignment="Left" Height="305" Margin="10,65,0,0" VerticalAlignment="Top" Width="135" SelectionChanged="lstArtist_SelectionChanged"/>
         <ListBox x:Name="lstAlbum" HorizontalAlignment="Left" Height="305" Margin="169,65,0,0" VerticalAlignment="Top" Width="135" SelectionChanged="lstAlbum_SelectionChanged"/>
