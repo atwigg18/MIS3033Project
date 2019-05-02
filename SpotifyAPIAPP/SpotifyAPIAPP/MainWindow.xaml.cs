@@ -70,12 +70,16 @@ namespace SpotifyAPIAPP
                 //lstArtist.Items.Add($"{s[0].Name}/{s[0].Id}");
                 foreach (var item in s)
                 {
-                    lstArtist.Items.Add($"{item.Name}/{item.Id}");
+                    ListBoxItem lbi = new ListBoxItem();
+                    lbi.Content = item.Name;
+                    lbi.Tag = item;
+                    lstArtist.Items.Add(lbi);// $"{item.Name}/{item.Id}");
                 }
             }
-            catch
-            {
+            catch(Exception ex)
+            {//
                 MessageBox.Show("Please enter a valid artist!", "ALERT!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(ex.Message);
             }
             //var selection = lstAlbum.SelectedItem.ToString().Split('/');
             //Paging<SimpleTrack> st = Spot1.GetAlbumTracks(selection[1]);
@@ -87,7 +91,7 @@ namespace SpotifyAPIAPP
         }
 
         private void lstArtist_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        { 
             lstAlbum.Items.Clear();
             lstAlbum.SelectedIndex = -1;
             lstSong.SelectedIndex = -1;
@@ -116,12 +120,22 @@ namespace SpotifyAPIAPP
             try
             {
                 var s = search.Artists.Items.ToList();
-                var selection = lstArtist.SelectedItem.ToString().Split('/');
-                Paging<SimpleAlbum> sev = Spot1.GetArtistsAlbums(selection[1], AlbumType.All);
-                sev.Items.ForEach(x => lstAlbum.Items.Add($"{x.Name}/{x.Id}"));
+                
+                var selection = (FullArtist)((ListBoxItem) lstArtist.SelectedItem).Tag;
+                Paging<SimpleAlbum> sev = Spot1.GetArtistsAlbums(selection.Id, AlbumType.All);
+                //sev.Items.ForEach(x => lstAlbum.Items.Add($"{x.Name}"));
+                var sevs = sev.Items.ToList();
+                foreach (var item in sevs)
+                {
+                    ListBoxItem lbi = new ListBoxItem();
+                    lbi.Content = item.Name;
+                    lbi.Tag = item;
+                    lstAlbum.Items.Add(lbi);// $"{item.Name}/{item.Id}");
+                }
             }
-            catch
+            catch(Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 lstArtist.SelectedIndex = -1;
             }
         }
@@ -151,10 +165,11 @@ namespace SpotifyAPIAPP
             };
             try
             {
-                var selection = lstAlbum.SelectedItem.ToString().Split('/');
-                Paging<SimpleTrack> st = Spot1.GetAlbumTracks(selection[1]);
+                
+                var selection = (SimpleAlbum)((ListBoxItem) lstAlbum.SelectedItem).Tag;
+                Paging<SimpleTrack> st = Spot1.GetAlbumTracks(selection.Id);
                 st.Items.ForEach(x => lstSong.Items.Add(x.Name));
-                FullAlbum imgs = Spot1.GetAlbum(selection[1]);
+                FullAlbum imgs = Spot1.GetAlbum(selection.Id);
                 
                 BitmapImage img = new BitmapImage();
                 img.BeginInit();
@@ -172,8 +187,9 @@ namespace SpotifyAPIAPP
                 
                    
             }
-            catch
+            catch(Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 lstArtist.Items.Clear();
                 lstAlbum.Items.Clear();
                 lstSong.Items.Clear();
