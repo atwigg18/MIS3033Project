@@ -16,10 +16,11 @@
         <ListBox x:Name="lstArtist" HorizontalAlignment="Left" Height="305" Margin="10,65,0,0" VerticalAlignment="Top" Width="135" SelectionChanged="lstArtist_SelectionChanged"/>
         <ListBox x:Name="lstAlbum" HorizontalAlignment="Left" Height="305" Margin="169,65,0,0" VerticalAlignment="Top" Width="135" SelectionChanged="lstAlbum_SelectionChanged"/>
         <ListBox x:Name="lstSong" HorizontalAlignment="Left" Height="305" Margin="335,65,0,0" VerticalAlignment="Top" Width="135"/>
-        <Image x:Name="imgalbum" HorizontalAlignment="Left" Height="238" Margin="498,99,0,0" VerticalAlignment="Top" Width="265"/>
+        <Image x:Name="imgalbum" HorizontalAlignment="Left" Height="238" Margin="498,66,0,0" VerticalAlignment="Top" Width="265"/>
         <Label Content="Artist:" HorizontalAlignment="Left" Margin="7,41,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14"/>
         <Label Content="Album:" HorizontalAlignment="Left" Margin="165,41,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14"/>
         <Label Content="Song:" HorizontalAlignment="Left" Margin="331,40,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14"/>
+        <TextBlock x:Name="txtbDesc" HorizontalAlignment="Left" Margin="498,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontSize="16"/>
 
     </Grid>
 </Window>

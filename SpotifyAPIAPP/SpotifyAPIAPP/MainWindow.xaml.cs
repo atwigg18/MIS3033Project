@@ -89,6 +89,10 @@ namespace SpotifyAPIAPP
         private void lstArtist_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lstAlbum.Items.Clear();
+            lstAlbum.SelectedIndex = -1;
+            lstSong.SelectedIndex = -1;
+            
+            
             string cid = "84654d712193471199189e4f593781dc";
             string sid = "ab7ead187ddd4f0aaa17542b26ca8d5e";
 
@@ -125,6 +129,7 @@ namespace SpotifyAPIAPP
         private void lstAlbum_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lstSong.Items.Clear();
+            txtbDesc.Inlines.Clear();
             string cid = "84654d712193471199189e4f593781dc";
             string sid = "ab7ead187ddd4f0aaa17542b26ca8d5e";
 
@@ -156,6 +161,16 @@ namespace SpotifyAPIAPP
                 img.UriSource = new Uri(imgs.Images[0].Url);
                 img.EndInit();
                 imgalbum.Source = img;
+
+                txtbDesc.Inlines.Add($"Popularity rating: {imgs.Popularity.ToString()}\nReleased on: {imgs.ReleaseDate}");
+                //txtbDesc.Inlines.Add($"");
+                
+                
+                
+                
+                
+                
+                   
             }
             catch
             {
